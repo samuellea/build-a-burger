@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData'
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Checkout extends Component {
-  state = {
-    ingredients: {},
-    price: null
-  };
+  // state = {
+  //   ingredients: {},
+  //   price: null
+  // };
 
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
@@ -18,36 +19,41 @@ class Checkout extends Component {
   };
 
   render() {
-    const { ingredients, price } = this.state;
+    const { ings, totPri } = this.props;
     return (
       <div className="Checkout">
         <CheckoutSummary
-          ingredients={ingredients}
+          ingredients={ings}
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler} />
-        <Route path={this.props.match.path + '/contact-data'} render={(props) => (<ContactData ingredients={ingredients} price={price} {...props} />)} />
+        <Route path={this.props.match.path + '/contact-data'} component={ContactData} />
       </div>
     )
   };
 
-  componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search);
-    const ingredients = {};
-    let price;
-    for (let param of query.entries()) {
-      if (param[0] === 'price') {
-        price = param[1]
-      } else {
-        ingredients[param[0]] = +param[1]; // convert to number using a plus
-      }
-    };
-    console.log(ingredients, ' <- ingredients in Checkout.js componentDidMount!')
-    this.setState({
-      ingredients: ingredients,
-      price: price
-    });
-  };
+  // componentDidMount() { // former means of extracting the ingredients that had been passed from BurgerBuilder to this component via query params
+  //   const query = new URLSearchParams(this.props.location.search);
+  //   const ingredients = {};
+  //   let price;
+  //   for (let param of query.entries()) {
+  //     if (param[0] === 'price') {
+  //       price = param[1]
+  //     } else {
+  //       ingredients[param[0]] = +param[1]; // convert to number using a plus
+  //     }
+  //   };
+  //   this.setState({
+  //     ingredients: ingredients,
+  //     price: price
+  //   });
+  // };
 
 };
 
-export default Checkout;
+const mapStateToProps = state => {
+  return {
+    ings: state.ingredients
+  }
+}
+
+export default connect(mapStateToProps)(Checkout);
