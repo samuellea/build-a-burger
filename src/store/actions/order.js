@@ -52,7 +52,12 @@ export const fetchOrdersFailure = () => {
 };
 
 export const fetchOrdersStart = () => {
+  return { type: actionTypes.FETCH_ORDERS_START }
+};
+
+export const fetchOrders = () => {
   return (dispatch) => {
+    dispatch(fetchOrdersStart());
     axios.get('/orders.json')
       .then(({ data }) => {
         const fetchedOrders = [];
@@ -62,7 +67,7 @@ export const fetchOrdersStart = () => {
         dispatch(fetchOrdersSuccess(fetchedOrders))
       })
       .catch(err => {
-        dispatch(fetchOrdersFailure())
+        dispatch(fetchOrdersFailure(err))
       })
   };
 };

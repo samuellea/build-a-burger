@@ -17,7 +17,7 @@ class Orders extends Component {
   render() {
     const { ordrs, ldng } = this.props;
 
-    let orders = null;
+    let orders = <Spinner />;
     if (ldng) { orders = <Spinner /> } else {
       if (ordrs.length) {
         orders = ordrs.map(order => (
@@ -38,8 +38,8 @@ class Orders extends Component {
   };
 
   componentDidMount() {
-    const { onOrdersInit } = this.props;
-    onOrdersInit();
+    const { onFetchOrders } = this.props;
+    onFetchOrders();
   };
 };
 
@@ -52,7 +52,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrdersInit: (orders) => dispatch(actionCreators.fetchOrdersStart(orders))
+    onFetchOrders: (orders) => dispatch(actionCreators.fetchOrders(orders))
   };
 };
 
