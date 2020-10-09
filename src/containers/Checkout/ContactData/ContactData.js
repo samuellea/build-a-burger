@@ -6,6 +6,8 @@ import Input from '../../../components/UI/Input/Input'
 import './ContactData.css';
 import { object } from 'prop-types';
 import { connect } from 'react-redux';
+import * as orderActionCreators from '../../../store/actions/index'
+import ErrorHandler from '../../../hoc/ErrorHandler/ErrorHandler';
 
 class ContactData extends Component {
   state = {
@@ -88,8 +90,8 @@ class ContactData extends Component {
 
 
   orderHandler = () => {
+    const { onOrderBurger } = this.props;
     if (this.state.formCompleted) {
-      this.setState({ loading: true });
 
       const formData = {}; // compose all the form data as exists in state in an object ready for form submission to the db.
       for (let formElementId in this.state.orderForm) {
@@ -102,19 +104,8 @@ class ContactData extends Component {
         contactData: formData
       };
 
-      console.log(order, ' < ---- order!')
-
-      axios.post('/orders.json', order)
-        .then(response => {
-          this.setState({ loading: false });
-          this.props.history.push(`/BurgerBuilder`);
-        })
-        .catch(error => {
-          console.log(error);
-          this.setState({ loading: true });
-        });
-    }
-
+      onOrderBurger(order);
+    };
   };
 
   checkValidity = (value, rules) => {
@@ -197,9 +188,17 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
   return {
+    // ings: state.brgr.ingredients,
+    // totPri: state.brgr.totalPrice
     ings: state.ingredients,
-    price: state.totalPrice
+    totPri: state.totalPrice
   }
 };
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrderBurger: (orderData) => dispatch(orderActionCreators.purchaseBurgerStart(orderData))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorHandler(ContactData, axios));

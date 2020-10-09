@@ -1,13 +1,9 @@
-import * as actionTypes from '../store/actions';
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  ingredients: {
-    salad: 0,
-    bacon: 0,
-    cheese: 0,
-    meat: 0
-  }, // coming from firebase database /ingredients.json
-  totalPrice: 0.5
+  ingredients: null,
+  totalPrice: 0.5,
+  error: false
 };
 
 const INGREDIENT_PRICES = {
@@ -17,7 +13,7 @@ const INGREDIENT_PRICES = {
   meat: 1.3
 };
 
-const reducer = (state = initialState, action) => {
+const burgerBuilderReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
       return {
@@ -31,8 +27,24 @@ const reducer = (state = initialState, action) => {
         ingredients: { ...state.ingredients, [action.ingredientName]: state.ingredients[action.ingredientName] - 1 },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
       }
+    case actionTypes.SET_INGREDIENTS:
+      const { salad, bacon, cheese, meat } = action.payload;
+      return {
+        ...state,
+        ingredients: { salad, bacon, cheese, meat }
+      }
+    case actionTypes.FETCH_INGREDIENTS_FAILED:
+      return {
+        ...state,
+        error: true
+      }
+    case actionTypes.PURCHASE_BURGER_SUCCESS:
+      return {
+        ...state,
+
+      }
     default: return state;
   }
 };
 
-export default reducer;
+export default burgerBuilderReducer;
