@@ -31,17 +31,13 @@ const burgerBuilderReducer = (state = initialState, action) => {
       const { salad, bacon, cheese, meat } = action.payload;
       return {
         ...state,
-        ingredients: { salad, bacon, cheese, meat }
+        ingredients: { salad, bacon, cheese, meat },
+        totalPrice: 0.5
       }
     case actionTypes.FETCH_INGREDIENTS_FAILED:
       return {
         ...state,
         error: true
-      }
-    case actionTypes.PURCHASE_BURGER_SUCCESS:
-      return {
-        ...state,
-
       }
     default: return state;
   }

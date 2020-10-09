@@ -3,39 +3,57 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import ErrorHandler from '../../hoc/ErrorHandler/ErrorHandler';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Orders extends Component {
 
-  state = {
-    orders: [],
-    loading: true
-  }
+  // state = {
+  //   orders: [],
+  //   loading: true
+  // };
+
   render() {
-    return (
-      <div>
-        {this.state.orders.map(order => (
+    const { ordrs, ldng } = this.props;
+
+    let orders = null;
+    if (ldng) { orders = <Spinner /> } else {
+      if (ordrs.length) {
+        orders = ordrs.map(order => (
           <Order
             key={order.id}
             ingredients={order.ingredients}
             price={order.totalPrice} />
-        ))}
+        ))
+      } else {
+        orders = <h1>No orders to see here!</h1>
+      }
+    };
+    return (
+      <div>
+        {orders}
       </div>
     );
   };
 
   componentDidMount() {
-    axios.get('/orders.json')
-      .then(({ data }) => {
-        const fetchedOrders = [];
-        for (let key in data) {
-          fetchedOrders.push({ ...data[key], id: key });
-        }
-        this.setState({ orders: fetchedOrders, loading: false });
-      })
-      .catch(err => {
-        this.setState({ loading: false });
-      })
+    const { onOrdersInit } = this.props;
+    onOrdersInit();
   };
 };
 
-export default ErrorHandler(Orders);
+const mapStateToProps = state => {
+  return {
+    ordrs: state.ordr.orders,
+    ldng: state.ordr.loading
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrdersInit: (orders) => dispatch(actionCreators.fetchOrdersStart(orders))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorHandler(Orders, axios));

@@ -83,8 +83,7 @@ class ContactData extends Component {
         touched: false
       },
     },
-    formCompleted: false,
-    loading: false
+    formCompleted: false
   };
 
 
@@ -100,7 +99,7 @@ class ContactData extends Component {
 
       const order = {
         ingredients: this.props.ings,
-        totalPrice: this.props.price,
+        totalPrice: this.props.totPri,
         contactData: formData
       };
 
@@ -143,11 +142,12 @@ class ContactData extends Component {
 
   render() {
     const { orderForm, formCompleted } = this.state;
+    const { ldng } = this.props;
 
     let formButtonType;
     if (!formCompleted) { formButtonType = "Disabled" } else { formButtonType = "Success" }
 
-    if (this.state.loading) {
+    if (ldng) {
       return (<Spinner />)
     } else {
       return (
@@ -188,17 +188,16 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
   return {
-    // ings: state.brgr.ingredients,
-    // totPri: state.brgr.totalPrice
-    ings: state.ingredients,
-    totPri: state.totalPrice
+    ings: state.brgr.ingredients,
+    totPri: state.brgr.totalPrice,
+    ldng: state.ordr.loading
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderBurger: (orderData) => dispatch(orderActionCreators.purchaseBurgerStart(orderData))
-  }
-}
+    onOrderBurger: (orderData) => dispatch(orderActionCreators.purchaseBurger(orderData))
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorHandler(ContactData, axios));

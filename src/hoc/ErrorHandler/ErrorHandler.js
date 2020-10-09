@@ -35,7 +35,7 @@ const ErrorHandler = (WrappedComponent, axios) => {
     };
 
     componentWillUnmount() { // because we want this ErrorHandler component to be re-usable throught our app, we need to remove our axios interceptors each time it unmounts.
-      // why? Because otherwise every single time this component is instantiate, we will be opening adding interceptors to our axios instance, not closing them,
+      // why? Because otherwise every single time this component is instantiated, we will be opening adding interceptors to our axios instance, not closing them,
       // so they'll continue listening to all our axios requests and responses ... this will at best be a waste of app memory, and at worse, cause all kinds of weird errors or
       // unexpected state changes.
       axios.interceptors.request.eject(this.reqInterceptor);

@@ -20,6 +20,6 @@ const Burger = ({ ingredients }) => {
       <BurgerIngredient type="bread-bottom" />
     </div>
   );
-}
+};
 
 export default Burger;
