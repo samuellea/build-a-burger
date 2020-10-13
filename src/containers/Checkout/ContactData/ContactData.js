@@ -89,7 +89,7 @@ class ContactData extends Component {
 
 
   orderHandler = () => {
-    const { onOrderBurger } = this.props;
+    const { onOrderBurger, tkn } = this.props;
     if (this.state.formCompleted) {
 
       const formData = {}; // compose all the form data as exists in state in an object ready for form submission to the db.
@@ -99,11 +99,11 @@ class ContactData extends Component {
 
       const order = {
         ingredients: this.props.ings,
-        totalPrice: this.props.totPri,
+        totalPrice: this.props.totPri.toFixed(2),
         contactData: formData
       };
 
-      onOrderBurger(order);
+      onOrderBurger(order, tkn);
     };
   };
 
@@ -190,13 +190,14 @@ const mapStateToProps = state => {
   return {
     ings: state.brgr.ingredients,
     totPri: state.brgr.totalPrice,
-    ldng: state.ordr.loading
+    ldng: state.ordr.loading,
+    tkn: state.auth.token
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderBurger: (orderData) => dispatch(orderActionCreators.purchaseBurger(orderData))
+    onOrderBurger: (orderData, token) => dispatch(orderActionCreators.purchaseBurger(orderData, token))
   };
 };
 

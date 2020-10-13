@@ -2,7 +2,7 @@ import React from 'react';
 import './BuildControls.css';
 import BuildControl from './BuildControl/BuildControl';
 
-const BuildControls = ({ ingredients, addIngredientHandler, removeIngredientHandler, price, purchasable, purchaseHandler }) => {
+const BuildControls = ({ ingredients, addIngredientHandler, removeIngredientHandler, price, purchasable, purchaseHandler, isAuth }) => {
   return (
     <div className="BuildControls">
       <p>Current Price: <strong>£{price.toFixed(2)}</strong></p>
@@ -21,7 +21,7 @@ const BuildControls = ({ ingredients, addIngredientHandler, removeIngredientHand
         className="OrderButton"
         disabled={!purchasable}
         onClick={purchaseHandler}
-      >ORDER NOW</button>
+      >{isAuth ? 'ORDER NOW' : 'LOGIN / SIGNUP TO ORDER'}</button>
     </div>
   )
 }
