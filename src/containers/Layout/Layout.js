@@ -11,7 +11,6 @@ class Layout extends Component {
   };
 
   sideDrawerActionHandler = () => {
-    console.log('sideDrawerActionHandler!')
     const { showSideDrawer } = this.state;
     if (showSideDrawer) {
       this.setState({

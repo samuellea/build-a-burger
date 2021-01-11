@@ -6,8 +6,6 @@ import { withRouter } from 'react-router-dom';
 
 
 const checkoutSummary = (props) => {
-  console.log(props.location.search, '< - - - props.location.search');
-
   const { ingredients, checkoutCancelled, checkoutContinued } = props;
   return (
     <div className="CheckoutSummary">

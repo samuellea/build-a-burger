@@ -27,12 +27,10 @@ export const purchaseBurger = (orderData, token) => {
     dispatch(purchaseBurgerStart());
     axios.post('/orders.json?auth=' + token, orderData)
       .then(({ data }) => {
-        console.log(data)
         dispatch(purchaseBurgerSuccess(data.name, orderData));
       })
       .catch(error => {
         dispatch(purchaseBurgerFailure(error));
-        console.log(error);
       });
   }
 };
@@ -68,7 +66,6 @@ export const fetchOrders = (token, currentUserId) => {
         dispatch(fetchOrdersSuccess(fetchedOrders))
       })
       .catch(err => {
-        console.log(err, ' <--- err as logged in actions/order.js')
         dispatch(fetchOrdersFailure(err))
       })
   };

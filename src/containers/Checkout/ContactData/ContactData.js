@@ -126,7 +126,6 @@ class ContactData extends Component {
   };
 
   inputChangedHandler = (event, key) => {
-    console.log(event.target.value)
     this.setState({
       ...this.state,
       orderForm: {
@@ -172,10 +171,6 @@ class ContactData extends Component {
         </div>
       )
     };
-  };
-
-  componentDidMount() {
-    // console.log(this.props.ingredients, ' <- this.props.ingredients in ContactData componentDidMount!')
   };
 
   componentDidUpdate(prevProps, prevState) {
