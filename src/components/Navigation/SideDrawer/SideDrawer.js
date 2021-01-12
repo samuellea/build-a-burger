@@ -10,6 +10,8 @@ const SideDrawer = ({ show, closed, isAuth }) => {
     attachedClasses = ['SideDrawer', 'Open']
   };
 
+  console.log(isAuth, ' * * * * * *')
+
   return (
     <>
       <Backdrop show={show} clicked={closed} />
@@ -18,7 +20,7 @@ const SideDrawer = ({ show, closed, isAuth }) => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems isAuthenticate={isAuth} />
+          <NavigationItems isAuthenticated={isAuth} />
         </nav>
       </div>
     </>
